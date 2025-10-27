@@ -1,8 +1,62 @@
 #!/usr/bin/env python3
+from constants import ROOMS, COMMANDS
+from player_actions import show_inventory, move_player, take_item, use_item
+from utils import describe_current_room, solve_puzzle, get_input, show_help, pseudo_random, attempt_open_treasure
+
+game_state = {
+    'player_inventory': [], # Инвентарь игрока
+    'current_room': 'entrance', # Текущая комната
+    'game_over': False, # Значения окончания игры
+    'steps_taken': 0 # Количество шагов
+}
+
+def process_command(game_state, command):
+        match command:
+            case 'выход' | 'exit' | 'quit':
+                print("Game over!")
+                game_state['game_over'] = True
+            case 'инвентарь' | 'inventory' | 'i':
+                show_inventory(game_state)
+            
+            case 'осмотреться' | 'look':
+                describe_current_room(game_state)
+
+            case 'решить' | 'solve':
+                if game_state['current_room'] == 'treasure_room':
+                    attempt_open_treasure(game_state)
+                else:
+                    solve_puzzle(game_state)
+            
+            case cmd if cmd.startswith('идти ') or cmd.startswith('move ') or cmd.startswith('go '):
+                direction = command.split()[1] if len(command.split()) > 1 else ''
+                move_player(game_state, direction)
+
+            case 'north' | 'south' | 'east' | 'west' as direction:
+                move_player(game_state, direction)
+
+            case cmd if cmd.startswith('поднять ') or cmd.startswith('take '):
+                item = command.split()[1] if len(command.split()) > 1 else ''
+                take_item(game_state, item)
+            
+            case cmd if cmd.startswith('использовать ') or cmd.startswith('use '):
+                item = command.split()[1] if len(command.split()) > 1 else ''
+                use_item(game_state, item)
+
+            case 'помощь' | 'help':
+                show_help(COMMANDS)
+            
+            case _:
+                print("Неизвестная команда")
 
 def main():
-    """Основная функция игры."""
-    print("Первая попытка запустить проект!")
+    print("Добро пожаловать в Лабиринт сокровищ!")
+    describe_current_room(game_state)
+
+    while not game_state['game_over']:
+        command = get_input("Введите команду: ").lower()
+        process_command(game_state, command)
+        
+
 
 
 if __name__ == "__main__":
