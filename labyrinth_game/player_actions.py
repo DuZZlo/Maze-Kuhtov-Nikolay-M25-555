@@ -1,7 +1,6 @@
-from constants import ROOMS
-from utils import describe_current_room
-from utils import attempt_open_treasure
-from utils import random_event
+from labyrinth_game.constants import ROOMS
+from labyrinth_game.utils import describe_current_room, random_event
+
 
 def show_inventory(game_state):
     inventory = game_state['player_inventory']
@@ -38,7 +37,7 @@ def take_item(game_state, item_name):
         return False
 
     if room['puzzle'] is not None:
-        print(f"Вы не можете взять предметы здесь, пока не решите загадку.")
+        print("Вы не можете взять предметы здесь, пока не решите загадку.")
         return False
 
     if item_name in room['items']:
@@ -49,8 +48,6 @@ def take_item(game_state, item_name):
         print("Такого предмета здесь нет.")
 
 def use_item(game_state, item_name):
-    current_room_name = game_state['current_room']
-    room = ROOMS[current_room_name]
     if item_name == 'treasure_key' and game_state['current_room'] == 'treasure_room':
         from utils import attempt_open_treasure
         attempt_open_treasure(game_state)

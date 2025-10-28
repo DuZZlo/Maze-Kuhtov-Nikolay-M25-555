@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-from constants import ROOMS, COMMANDS
-from player_actions import show_inventory, move_player, take_item, use_item
-from utils import describe_current_room, solve_puzzle, get_input, show_help, pseudo_random, attempt_open_treasure
+from labyrinth_game.constants import COMMANDS
+from labyrinth_game.player_actions import move_player, show_inventory, take_item, use_item
+from labyrinth_game.utils import attempt_open_treasure, describe_current_room, get_input, show_help, solve_puzzle
 
 game_state = {
     'player_inventory': [], # Инвентарь игрока

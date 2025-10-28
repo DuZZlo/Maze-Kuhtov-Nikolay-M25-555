@@ -1,5 +1,6 @@
-from constants import ROOMS, COMMANDS
 import math
+
+from labyrinth_game.constants import ROOMS
 
 random = 0
 

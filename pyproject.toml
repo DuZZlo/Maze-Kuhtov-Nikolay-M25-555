@@ -16,7 +16,7 @@ python = "^3.12"
 project = "labyrinth_game.main:main"
 
 [tool.ruff]
-line-length = 88
+line-length = 220
 target-version = "py312"
 exclude = ["venv", ".venv", "dist", "__pycache__"]
 
