@@ -16,10 +16,10 @@ def move_player(game_state, direction):
     global is_door_opened
     if direction in room['exits']:
         next_room = room['exits'][direction]
-        if next_room == 'treasure_room' and 'rusty_key' not in game_state['player_inventory'] and is_door_opened == False:
+        if next_room == 'treasure_room' and 'rusty_key' not in game_state['player_inventory'] and not is_door_opened:
             print("Дверь заперта. Нужен ключ, чтобы пройти дальше.")
             return False
-        if next_room == 'treasure_room' and 'rusty_key' in game_state['player_inventory'] and is_door_opened == False:
+        if next_room == 'treasure_room' and 'rusty_key' in game_state['player_inventory'] and not is_door_opened:
             is_door_opened = True
             game_state['player_inventory'].remove('rusty_key')
             print("Вы используете найденный ключ, чтобы открыть путь в комнату сокровищ.")
