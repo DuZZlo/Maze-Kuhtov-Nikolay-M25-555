@@ -41,6 +41,12 @@ def solve_puzzle(game_state):
     if current_room_name == 'treasure_room':
         return attempt_open_treasure(game_state)
 
+    if current_room_name == 'goblin_room' and 'sword' not in game_state['player_inventory']:
+        print("В хламе роется Гоблин, увидев вас, он нападает.")
+        print("У вас не оказалось оружия, вы погибли\nИгра окончена.")
+        trigger_death(game_state)
+        return False
+
     if room['puzzle'] is None:
         print("Загадок нет")
         return False
@@ -61,6 +67,10 @@ def solve_puzzle(game_state):
     elif current_room_name == 'trap_room':
         print("Неверно!")
         trigger_trap(game_state)
+    elif current_room_name == 'goblin_room':
+        print("Гоблин победил, вы погибли\nИгра окончена.")
+        trigger_death(game_state)
+        return False
     else:
         print("Неверно!")
 
@@ -117,6 +127,9 @@ def pseudo_random(seed, modulo):
     x = math.sin(seed * 12.9898) * 43758.5453
     fractional_part = x - math.floor(x)
     return math.floor(fractional_part * modulo)
+
+def trigger_death(game_state):
+    game_state['game_over'] = True
 
 def trigger_trap(game_state):
     print("Ловушка активирована! Пол стал дрожать...")

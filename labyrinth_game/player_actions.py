@@ -1,6 +1,7 @@
 from labyrinth_game.constants import ROOMS
 from labyrinth_game.utils import describe_current_room, random_event
 
+is_door_opened = False #Флаг, чтобы понимать была ли открыта дверь в treasure_room, чтобы при следующем входе ключ не требовался
 
 def show_inventory(game_state):
     inventory = game_state['player_inventory']
@@ -12,13 +13,14 @@ def show_inventory(game_state):
 def move_player(game_state, direction):
     current_room_name = game_state['current_room']
     room = ROOMS[current_room_name]
-
+    global is_door_opened
     if direction in room['exits']:
         next_room = room['exits'][direction]
-        if next_room == 'treasure_room' and 'rusty_key' not in game_state['player_inventory']:
+        if next_room == 'treasure_room' and 'rusty_key' not in game_state['player_inventory'] and is_door_opened == False:
             print("Дверь заперта. Нужен ключ, чтобы пройти дальше.")
             return False
-        if next_room == 'treasure_room' and 'rusty_key' in game_state['player_inventory']:
+        if next_room == 'treasure_room' and 'rusty_key' in game_state['player_inventory'] and is_door_opened == False:
+            is_door_opened = True
             game_state['player_inventory'].remove('rusty_key')
             print("Вы используете найденный ключ, чтобы открыть путь в комнату сокровищ.")
         game_state['current_room'] = room['exits'][direction]
